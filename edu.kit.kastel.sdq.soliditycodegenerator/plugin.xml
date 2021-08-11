@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="edu.kit.kastel.sdq.soliditycodegenerator.handlers.SolidityCodeGeneratorHandler"
+            id="edu.kit.kastel.sdq.soliditycodegenerator.commands.generateSolidityCode"
+            name="Generate Solidity Code">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         <separator
+               name="edu.kit.kastel.sdq.soliditycodegenerator.beforeseparator"
+               visible="true">
+         </separator>
+         <menu
+               id="edu.kit.kastel.sdq.soliditycodegenerator.menus.solidityGenerator"
+               label="Solidity Generator"
+               mnemonic="M">
+            <command
+                  commandId="edu.kit.kastel.sdq.soliditycodegenerator.commands.generateSolidityCode"
+                  icon="icons/generate.png"
+                  id="edu.kit.kastel.sdq.soliditycodegenerator.menus.solidityGenerator"
+                  mnemonic="S"
+                  tooltip="Creates Solidity Code from Model">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="activeMenuSelection">
+                     <iterate>
+                        <adapt
+                              type="org.eclipse.core.resources.IResource">
+                           <or>
+                              <test
+                                    property="org.eclipse.core.resources.name"
+                                    value="*.rbac">
+                              </test>
+                              <test
+                                    property="org.eclipse.core.resources.name"
+                                    value="*.soliditysystem">
+                              </test>
+                              <test
+                                    property="org.eclipse.core.resources.name"
+                                    value="*.soliditycontracts">
+                              </test>
+                           </or>
+                        </adapt>
+                     </iterate>
+                  </with>
+               </visibleWhen>
+            </command>
+         </menu>
+         <separator
+               name="edu.kit.kastel.sdq.soliditycodegenerator.afterseparator"
+               visible="true">
+         </separator>
+      </menuContribution>
+   </extension>
+
+</plugin>
