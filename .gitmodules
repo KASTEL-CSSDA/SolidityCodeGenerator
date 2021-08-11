@@ -1,0 +1,3 @@
+[submodule "SolidityMetaModel"]
+	path = SolidityMetaModel
+	url = https://github.com/KASTEL-CSSDA/SolidityMetaModel.git
