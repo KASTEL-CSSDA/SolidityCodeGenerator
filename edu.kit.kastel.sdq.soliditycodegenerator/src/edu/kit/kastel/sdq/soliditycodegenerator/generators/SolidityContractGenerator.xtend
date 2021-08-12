@@ -233,6 +233,8 @@ class SolidityContractGenerator extends SolidityClassGenerationTemplate {
 		return allTypes.flatten
 	}
 	
+
+	
 	
 
 	

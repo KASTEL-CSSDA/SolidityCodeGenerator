@@ -47,7 +47,7 @@ class SolidityGenerator extends AbstractEcore2TxtGenerator {
 		
 		if(acRepository !== null) {
 			this.acGenerator = new AccessControlGenerator(acRepository, true);
-			var acContent = acGenerator.generate();
+			var acContent = acGenerator.generate().removeEmptyLines;
 			if (acContent !== null && !acContent.equals("")) {
 				contents.add(generateContentTriplet(acContent, AccessControlGenerator.accessControlName));
 			}	
@@ -57,7 +57,7 @@ class SolidityGenerator extends AbstractEcore2TxtGenerator {
 		for (element : resource.contents) {
 			if (element instanceof Repository) {
 				for(contract : element.contracts) {
-					val content = generateContent(contract);
+					val content = generateContent(contract).removeEmptyLines;
 
 					if (content !== null && !content.equals("")) {
 						contents.add(generateContentTriplet(content, contract));
@@ -139,5 +139,7 @@ class SolidityGenerator extends AbstractEcore2TxtGenerator {
 		"" // "Cannot generate content for generic EObject '" + object + "'!"
 	}
 
-	
+	private def String removeEmptyLines(String input)  {
+		return input.replaceAll("(\t?\r?\n){2,}","\n\n")
+	}
 }
