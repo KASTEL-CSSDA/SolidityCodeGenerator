@@ -42,11 +42,17 @@ class SolidityFunctionGenerator extends MethodGenerationTemplate {
 		return result.normalizeSpaces
 	}
 	
-	override protected generateBody() '''
+	override protected generateBody() {
+		if(currentFunction.content === null || currentFunction.content.empty) {
+			return '''
 		// TODO: implement and verify auto-generated method stub
 		revert("TODO: auto-generated method stub");
-	'''
-
+		'''
+			
+		} else {
+			return currentFunction.content
+		}
+	}
 	
 	override protected setCurrentTarget(Function function) {
 		this.currentFunction = function;

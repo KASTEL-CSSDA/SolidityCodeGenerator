@@ -249,15 +249,13 @@ class SolidityNaming {
 	}
 	
 	static dispatch def String getTargetNameForType(DefaultArray array, boolean includeDataLocation) {
-		val dataLocation = includeDataLocation ? getTargetNameForDataLocation(array.dataLocation) : ""
-		return '''«getTargetNameForDefaultArrayEnum(array.type)» «dataLocation»'''
+		return '''«getTargetNameForDefaultArrayEnum(array.type)»«IF includeDataLocation» «getTargetNameForDataLocation(array.dataLocation)»«ENDIF»'''
 	}
 		 
 	
 	
 	static dispatch def String getTargetNameForType(CustomArray array, boolean includeDataLocation) {
-		val dataLocation = includeDataLocation ? getTargetNameForDataLocation(array.dataLocation) : ""
-		return '''«getTargetNameForType(array.type, false)»[«IF array.size > 0»«array.size»«ENDIF»] «dataLocation»'''
+		return '''«getTargetNameForType(array.type, false)»[«IF array.size > 0»«array.size»«ENDIF»]«IF includeDataLocation» «getTargetNameForDataLocation(array.dataLocation)»«ENDIF»'''
 	}
 		
 	
@@ -269,9 +267,8 @@ class SolidityNaming {
 		
 	
 	
-	static dispatch def String getTargetNameForType(Struct struct, boolean includeDataLocation) {
-		val dataLocation = includeDataLocation ? getTargetNameForDataLocation(struct.dataLocation) : ""		
-		return '''«struct.entityName» «dataLocation»'''
+	static dispatch def String getTargetNameForType(Struct struct, boolean includeDataLocation) {	
+		return '''«struct.entityName»«IF includeDataLocation» «getTargetNameForDataLocation(struct.dataLocation)»«ENDIF»'''
 	}
 	
 	static dispatch def String getTargetNameForType(FunctionType ft, boolean includeDataLocation) {

@@ -42,28 +42,22 @@ class SolidityGenerator extends AbstractEcore2TxtGenerator {
 	
 	private def void generateAndAddContents(Resource resource, List<Triplet<String, String, String>> contents) {
 		this.contractGenerator = new SolidityContractGenerator(targetSystem, acRepository)
-		
-		//TODO: Could reduce redundancy by passing contents and add in central method
+			
+		val repositories = resource.contents.filter[element| element instanceof Repository].map[x| x as Repository]		
+		val contracts = repositories.map[x|x.contracts].flatten.toList
+
 		
 		if(acRepository !== null) {
 			this.acGenerator = new AccessControlGenerator(acRepository, true);
-			var acContent = acGenerator.generate().removeEmptyLines;
-			if (acContent !== null && !acContent.equals("")) {
-				contents.add(generateContentTriplet(acContent, AccessControlGenerator.accessControlName));
-			}	
+			val acContract = acGenerator.generateAccessControlContract();
+			contracts.add(acContract);		
 		}	
-				
 		
-		for (element : resource.contents) {
-			if (element instanceof Repository) {
-				for(contract : element.contracts) {
-					val content = generateContent(contract).removeEmptyLines;
-
-					if (content !== null && !content.equals("")) {
-						contents.add(generateContentTriplet(content, contract));
-					}
-				}
-				
+		for(contract : contracts) {
+			val content = generateContent(contract).removeEmptyLines;
+					
+			if (content !== null && !content.equals("")) {
+				contents.add(generateContentTriplet(content, contract));
 			}
 		}
 
@@ -138,6 +132,7 @@ class SolidityGenerator extends AbstractEcore2TxtGenerator {
 	def generateContentUnexpectedEObject(EObject object) {
 		"" // "Cannot generate content for generic EObject '" + object + "'!"
 	}
+
 
 	private def String removeEmptyLines(String input)  {
 		return input.replaceAll("(\t?\r?\n){2,}","\n\n")

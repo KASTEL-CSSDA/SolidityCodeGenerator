@@ -17,6 +17,7 @@ import edu.kit.kastel.sdq.soliditymetamodel.soliditysystem.SystemAssembly
 import edu.kit.kastel.sdq.soliditymetamodel.soliditycontracts.Modifier
 import edu.kit.kastel.sdq.soliditymetamodel.rbac.Role
 import edu.kit.kastel.sdq.soliditymetamodel.soliditycontracts.ContractType
+import edu.kit.kastel.sdq.soliditymetamodel.soliditycontracts.Constructor
 
 class SolidityContractGenerator extends SolidityClassGenerationTemplate {
 	
@@ -55,12 +56,20 @@ class SolidityContractGenerator extends SolidityClassGenerationTemplate {
 		val overrides = overrideGenerator.generate(modifier)
 		val modifierHead = '''modifier «modifier.getModifierName»(«generateModifierParametersDefinition(modifier)») «virtual»«overrides»'''
 		return '''«modifierHead.normalizeSpaces»{
-	_; //TODO: Auto-generated Modifier
+	«generateModifierBody(modifier)»
 }'''
 	}
 	
 	private def String generateModifierParametersDefinition(Modifier modifier) {
 		return '''«FOR param : modifier.parameters SEPARATOR ", "»«getTargetNameForType(param.type, true)» «param.name»«ENDFOR»'''
+	}
+	
+	private def String generateModifierBody(Modifier modifier) {		
+		if(modifier.content === null || modifier.content.empty) {
+			return "_; //TODO: Auto-generated Modifier"
+		} else {
+			return modifier.content
+		}
 	}
 	
 	override protected generatePackage() {
@@ -83,10 +92,19 @@ class SolidityContractGenerator extends SolidityClassGenerationTemplate {
 		val constructor = currentTarget.constructor
 		if(constructor !== null) {
 			return '''constructor(«FOR param : constructor.parameters SEPARATOR ", "»«getTargetNameForType(param.type, true)» «param.name»«ENDFOR») {
-	//TODO: Auto-generated Constructor
+	«generateConstructorBody(constructor)»
 }'''
 		} 
 		return ""
+		
+	}
+	
+	private def String generateConstructorBody(Constructor constructor) {
+		if(constructor.content === null || constructor.content.empty) {
+			return "//TODO: Auto-generated Constructor"
+		} else {
+			return constructor.content
+		}
 		
 	}
 	

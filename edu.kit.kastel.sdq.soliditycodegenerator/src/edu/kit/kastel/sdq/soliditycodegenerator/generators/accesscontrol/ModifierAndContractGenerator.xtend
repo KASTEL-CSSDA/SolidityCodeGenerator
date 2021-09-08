@@ -187,7 +187,7 @@ _;'''
 		
 	}
 
-	// TODO: Make this possible to configurate by Generator-Elemen usage (Common Interface)
+	// TODO: Make this possible to configurate by Generator-Element usage (Common Interface)
 	def String generateProofObligationsForOperation(Function operation) {		
 		var proofObligationsForOperation = "";
 
